@@ -26,7 +26,7 @@ def main2(gpf_num, gpm_num, fs_num, ms_num, fc_num, mc_num, sib_num):
     item_column_num_dict = {}
     for item in [ 'gpf_num', 'gpm_num', 'fs_num', 'ms_num', 'fc_num', 'mc_num', 'sib_num' ]:
         num = eval(item)
-        print item, num, 'people'
+        #print item, num, 'people'
         end_num = start_num + num
         item_column_num_dict[item] = range(start_num, end_num)
         start_num = start_num + num
@@ -173,8 +173,22 @@ def main2(gpf_num, gpm_num, fs_num, ms_num, fc_num, mc_num, sib_num):
 
     print pd.DataFrame(V)
 
+    print '-------------------------------'
+    print 'Total family number :', totalNum
+    print '-------------------------------'
+    print gpf_num, gpm_num, fs_num, ms_num, fc_num, mc_num, sib_num
+    print 'Grand parents (father side) :', len(item_column_num_dict['gpf_num'])
+    print 'Grand parents (mother side) :', len(item_column_num_dict['gpm_num'])
+    print 'Father siblings :', len(item_column_num_dict['fs_num'])
+    print 'Mother siblings :', len(item_column_num_dict['ms_num'])
+    print 'Cousins (father side) :', len(item_column_num_dict['fc_num'])
+    print 'Cousins (mother side) :', len(item_column_num_dict['mc_num'])
+    print 'Siblings :', len(item_column_num_dict['mc_num'])
+
     L_input = raw_input('L ? :').split(' ')
+
     L = np.matrix([float(x) for x in L_input]).T
+    print len(L)
     L[L==1] = 2.78
     L[L==0] = -0.08
     print pd.DataFrame(L)
