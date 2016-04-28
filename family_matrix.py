@@ -26,19 +26,9 @@ def main2(gpf_num, gpm_num, fs_num, ms_num, fc_num, mc_num, sib_num):
     item_column_num_dict = {}
     for item in [ 'gpf_num', 'gpm_num', 'fs_num', 'ms_num', 'fc_num', 'mc_num', 'sib_num' ]:
         num = eval(item)
-        #print item, num, 'people'
         end_num = start_num + num
         item_column_num_dict[item] = range(start_num, end_num)
         start_num = start_num + num
-
-    #print item_column_num_dict
-
-
-    '''
-    mark parent
-    '''
-    #item_column_num_dict['parent'] = [item_column_num_dict['fs_num'][0], item_column_num_dict['ms_num'][0]]
-
 
 
     '''
@@ -46,120 +36,63 @@ def main2(gpf_num, gpm_num, fs_num, ms_num, fc_num, mc_num, sib_num):
     '''
     siblings = ['fs_num','ms_num','sib_num', 'fc_num', 'mc_num']
     for sibling in siblings:
-        try:
-            #cols = [x+1 for x in item_column_num_dict[sibling]]
-            cols = item_column_num_dict[sibling]
-            #print sibling, cols
-            distanceMatrix[np.ix_(cols,cols)] = .5
-                    
-                    #cols[0]:cols[-1] + 1, 
-                           #cols[0]:cols[-1] + 1] = .5
-        except:
-            pass
+        #cols = [x+1 for x in item_column_num_dict[sibling]]
+        cols = item_column_num_dict[sibling]
+        #print sibling, cols
+        distanceMatrix[np.ix_(cols,cols)] = .5
+                
+                #cols[0]:cols[-1] + 1, 
+                       #cols[0]:cols[-1] + 1] = .5
 
 
     '''
     3. children mark
-    # father side grand father
+    father side grand father
     '''
-    try:
-        distanceMatrix[np.ix_(item_column_num_dict['gpf_num'], 
-                        item_column_num_dict['fs_num'])] = .5
+    distanceMatrix[np.ix_(item_column_num_dict['gpf_num'], 
+                    item_column_num_dict['fs_num'])] = .5
 
-        distanceMatrix[np.ix_(item_column_num_dict['gpf_num'],
-                       item_column_num_dict['fc_num'])] = .25
+    distanceMatrix[np.ix_(item_column_num_dict['gpf_num'],
+                   item_column_num_dict['fc_num'])] = .25
 
-        distanceMatrix[np.ix_(item_column_num_dict['gpf_num'],
-                       item_column_num_dict['sib_num'])] = .25
-    except:
-        pass
-        print 'error'
+    distanceMatrix[np.ix_(item_column_num_dict['gpf_num'],
+                   item_column_num_dict['sib_num'])] = .25
 
-    '''
-    # mother side grand father
-    '''
-    try:
-        distanceMatrix[np.ix_(item_column_num_dict['gpm_num'], 
-                        item_column_num_dict['ms_num'])] = .5
+    '''mother side grand father'''
+    distanceMatrix[np.ix_(item_column_num_dict['gpm_num'], 
+                    item_column_num_dict['ms_num'])] = .5
 
-        distanceMatrix[np.ix_(item_column_num_dict['gpm_num'],
-                       item_column_num_dict['mc_num'])] = .25
+    distanceMatrix[np.ix_(item_column_num_dict['gpm_num'],
+                   item_column_num_dict['mc_num'])] = .25
 
-        distanceMatrix[np.ix_(item_column_num_dict['gpm_num'],
-                       item_column_num_dict['sib_num'])] = .25
-    except:
-        pass
-        print 'error'
+    distanceMatrix[np.ix_(item_column_num_dict['gpm_num'],
+                   item_column_num_dict['sib_num'])] = .25
 
+    '''Father siblings'''
+    distanceMatrix[np.ix_(item_column_num_dict['fs_num'],
+                   item_column_num_dict['fc_num'])] = .5
 
-    '''## Father siblings'''
-    try:
-        distanceMatrix[np.ix_(item_column_num_dict['fs_num'],
-                       item_column_num_dict['fc_num'])] = .5
+    distanceMatrix[np.ix_(item_column_num_dict['fs_num'],
+                   item_column_num_dict['sib_num'])] = .25
 
-        distanceMatrix[np.ix_(item_column_num_dict['fs_num'],
-                       item_column_num_dict['sib_num'])] = .25
-    except:
-        pass
-        print 'error'
+    distanceMatrix[np.ix_(item_column_num_dict['ms_num'],
+                   item_column_num_dict['mc_num'])] = .5
 
-    '''## Mother siblings'''
-    try:
-        distanceMatrix[np.ix_(item_column_num_dict['ms_num'],
-                       item_column_num_dict['mc_num'])] = .5
+    distanceMatrix[np.ix_(item_column_num_dict['ms_num'],
+                   item_column_num_dict['sib_num'])] = .25
 
-        distanceMatrix[np.ix_(item_column_num_dict['ms_num'],
-                       item_column_num_dict['sib_num'])] = .25
-    except:
-        pass
+    '''Father cousins'''
+    distanceMatrix[np.ix_(item_column_num_dict['fc_num'],
+                   item_column_num_dict['sib_num'])] = .25
 
+    '''Mother cousins'''
+    distanceMatrix[np.ix_(item_column_num_dict['mc_num'],
+                   item_column_num_dict['sib_num'])] = .25
 
-    # Father cousins
-    try:
-        distanceMatrix[np.ix_(item_column_num_dict['fc_num'],
-                       item_column_num_dict['sib_num'])] = .25
-    except:
-        pass
-
-    # Mother cousins
-    try:
-        distanceMatrix[np.ix_(item_column_num_dict['mc_num'],
-                       item_column_num_dict['sib_num'])] = .25
-    except:
-        pass
-
-    '''
-    parent mark
-    '''
-    try:
-        distanceMatrix[np.ix_([item_column_num_dict['fs_num'][-1], 
-                               item_column_num_dict['ms_num'][0]],
-                       item_column_num_dict['sib_num'])] = .5
-        #distanceMatrix[np.ix_([4, 
-                               #14],
-                       #item_column_num_dict['sib_num'])] = .5
-    except:
-        pass
-
-    #'''
-    #different side
-    #'''
-    ## Father and mother side
-    #try:
-        #distance[item_column_num_dict['fs_num'],
-                 #item_column_num_dict['ms_num']] = 0
-    #except:
-        #pass
-
-    ## Father side cousins and mother side cousins
-    #try:
-        #distance[item_column_num_dict['fc_num'],
-                 #item_column_num_dict['mc_num']] = 0
-    #except:
-        #pass
-
-
-
+    '''parent mark'''
+    distanceMatrix[np.ix_([item_column_num_dict['fs_num'][-1], 
+                           item_column_num_dict['ms_num'][0]],
+                   item_column_num_dict['sib_num'])] = .5
 
     distanceMatrix[range(totalNum),range(totalNum)] = 1
 
