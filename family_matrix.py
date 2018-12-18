@@ -92,5 +92,4 @@ def main2(gpf_num, gpm_num, fs_num, ms_num, fc_num, mc_num, sib_num):
     print(pd.DataFrame(L))
     
     g =  R * ((np.linalg.inv(V)) * L)
-    #g =  R * (np.linalg.inv(V)) * L
     print(pd.DataFrame(g))
